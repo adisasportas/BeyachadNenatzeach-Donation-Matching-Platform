@@ -1,0 +1,84 @@
+.about-me-container {
+  background-color: #f8d7da; /* Fallback background color in case the background image fails to load */
+  font-family: 'Arial', sans-serif; /* Sets the font family for text inside this container */
+  padding: 17px; /* Adds padding inside the container */
+  padding-bottom: 150px; /* Extra padding at the bottom to create space */
+  display: flex; /* Use flexbox to align content to the right */
+  justify-content: flex-end; /* Aligns content to the right */
+  background: url('../../images/AboutMePic.jpg') no-repeat center center; /* Sets a background image centered both vertically and horizontally without repeating */
+  height: calc(100vh - 70px); /* The height is the full viewport height minus 70px, likely accounting for a header */
+  overflow: hidden; /* Hides any content that overflows the container */
+  background-size: 1425px; /* Sets the background image width to 1425px */
+  position: relative; /* Positions the container relative to its normal position for absolute positioning of children */
+}
+
+.about-me-content {
+  width: 100%; /* Content takes up the full width of its parent */
+  max-width: 700px; /* Limits the content width to 700px */
+  background-color: #ffffff; /* Sets a white background for the content */
+  padding: 20px; /* Adds padding inside the content */
+  margin-left: 15%; /* Moves the content 15% away from the left */
+  border-radius: 10px; /* Rounds the corners of the content box */
+  display: flex; /* Uses flexbox for internal layout */
+  flex-direction: column; /* Stacks child elements vertically */
+  justify-content: center; /* Centers child elements vertically */
+  align-items: center; /* Centers child elements horizontally */
+  height: calc(100vh - 200px); /* The height is the full viewport height minus 200px, likely adjusting for additional elements like the navbar */
+  position: relative; /* Positions the content relative to its normal position for absolute positioning of children */
+}
+
+.about-me-content h1,
+.about-me-content p {
+  text-align: center; /* Centers the text horizontally */
+  width: 100%; /* Ensures the text elements take up the full width of the parent */
+}
+
+.edit-textarea {
+  width: 100%; /* Textarea takes up the full width of the content container */
+  max-width: 660px; /* Limits the width to 660px to align with the content container */
+  height: 400px; /* Sets the height of the textarea */
+  padding: 20px; /* Adds padding inside the textarea */
+  margin-bottom: 20px; /* Adds space below the textarea */
+  border-radius: 5px; /* Rounds the corners of the textarea */
+  border: 1px solid #ccc; /* Adds a light gray border around the textarea */
+  font-family: 'Arial', sans-serif; /* Sets the font for the text inside the textarea */
+  font-size: 16px; /* Sets the font size of the text inside the textarea */
+  resize: none; /* Disables resizing of the textarea */
+}
+
+.admin-buttons {
+  display: flex; /* Uses flexbox to layout the buttons */
+  gap: 10px; /* Adds space between the buttons */
+  position: absolute; /* Positions the buttons relative to the closest positioned ancestor */
+  top: -15px; /* Moves the buttons 15px above their normal position */
+  left: -535px; /* Moves the buttons 535px to the left of their normal position */
+}
+
+.admin-buttons .edit-mode-btn, .admin-buttons .save-btn {
+  padding: 10px 20px; /* Adds padding inside the buttons */
+  font-size: 16px; /* Sets the font size of the button text */
+  cursor: pointer; /* Changes the cursor to a pointer when hovering over the button */
+  border: none; /* Removes the default border of the buttons */
+  border-radius: 5px; /* Rounds the corners of the buttons */
+  transition: background-color 0.3s; /* Smoothly changes the background color over 0.3 seconds when hovered */
+  height: 45px; /* Sets the height of the buttons */
+}
+
+.admin-buttons .edit-mode-btn {
+  background-color: #008cba; /* Sets the background color of the edit mode button to blue */
+  color: white; /* Sets the text color of the edit mode button to white */
+}
+
+.admin-buttons .edit-mode-btn:hover {
+  background-color: #007bb5; /* Changes the background color of the edit mode button when hovered */
+}
+
+.admin-buttons .save-btn {
+  background-color: #495c70; /* Sets the background color of the save button to a darker blue */
+  color: white; /* Sets the text color of the save button to white */
+}
+
+.admin-buttons .save-btn:hover {
+  background-color: #324254; /* Changes the background color of the save button when hovered */
+}
+

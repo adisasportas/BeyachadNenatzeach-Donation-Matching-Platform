@@ -1,0 +1,312 @@
+body, html {
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  width: 100%; /* Ensures content takes up full width */
+  height: 100%; /* Ensures content takes up full height */
+  box-sizing: border-box; /* Ensures padding and borders are included in element's total width and height */
+}
+
+.overlay {
+  position: fixed; /* Fixes the overlay to the viewport */
+  top: 0; /* Positions overlay at the top */
+  left: 0; /* Positions overlay at the left */
+  width: 100%; /* Full width of the viewport */
+  height: 100%; /* Full height of the viewport */
+  background-color: rgba(0, 0, 0, 0.5); /* Black with transparency for dimming effect */
+  display: flex; /* Uses flexbox to center content */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  z-index: 999; /* Ensures overlay is above other content */
+}
+
+.org-details {
+  background-color: #fff; /* White background for the modal */
+  padding: 20px; /* Padding inside the modal */
+  border: 1px solid #ccc; /* Light gray border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 1000; /* High z-index to ensure it's above the overlay */
+  max-height: 60%; /* Limits height to 60% of the viewport, allows for vertical scrolling */
+  overflow-y: auto; /* Enables vertical scrolling if content overflows */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  width: 80%; /* Takes up 80% of the viewport width */
+  max-width: 600px; /* Sets a maximum width for the modal */
+  position: relative; /* Allows for absolute positioning of children */
+  margin: auto; /* Centers the modal within the overlay */
+  display: flex; /* Uses flexbox for layout */
+  flex-direction: column; /* Stacks children vertically */
+  text-align: center; /* Centers text horizontally */
+  align-items: center; /* Centers children horizontally */
+  padding-top: 15px; /* Adds extra padding at the top */
+}
+
+.container {
+  position: relative; /* Allows for absolute positioning of children */
+  min-height: 100vh; /* Ensures the container covers full viewport height */
+  padding: 20px; /* Adds padding inside the container */
+  padding-bottom: 110px; /* Additional padding at the bottom */
+  box-sizing: border-box; /* Includes padding and borders in the element's total width and height */
+}
+
+@media (max-width: 768px) {
+  .org-details {
+    width: 90%; /* Increases width for smaller screens */
+  }
+}
+
+.org-list {
+  display: flex; /* Uses flexbox for layout */
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  justify-content: space-around; /* Distributes items evenly */
+  padding: 20px; /* Adds padding inside the container */
+  gap: 20px; /* Adds space between items */
+  margin-bottom: 20px; /* Adds space below the list */
+}
+
+.org-entry {
+  background-color: #f8f9fa; /* Light gray background */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border-radius: 10px; /* Rounds the corners */
+  padding: 20px; /* Adds padding inside the card */
+  width: calc(33.333% - 40px); /* Sets the width of each card */
+  box-sizing: border-box; /* Includes padding and borders in the element's total width and height */
+  text-align: center; /* Centers text */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+  border: 1px solid #e0e0e0; /* Light gray border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.org-entry:hover {
+  transform: scale(1.05); /* Slightly enlarges the card on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+.org-entry h1 {
+  font-size: 1.5rem; /* Larger font size for the title */
+  margin: 0; /* Removes default margin */
+  margin-bottom: 10px; /* Adds space below the title */
+  color: #343a40; /* Darker text color */
+}
+
+.org-entry p {
+  margin: 5px 0; /* Adds space above and below the text */
+  color: #6c757d; /* Gray text color */
+}
+
+@media (max-width: 768px) {
+  .org-entry {
+    width: 100%; /* Full width on smaller screens */
+  }
+}
+
+.admin-controls {
+  margin-bottom: 20px; /* Adds space below the controls */
+}
+
+.edit-mode-btn, .add-org-btn {
+  padding: 10px 20px; /* Padding inside the buttons */
+  margin-right: 10px; /* Adds space between buttons */
+  font-size: 16px; /* Font size for button text */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effects */
+}
+
+.edit-mode-btn {
+  background-color: #8e8787; /* Default gray color */
+  color: white; /* White text color */
+}
+
+.edit-mode-btn.active {
+  background-color: #5e5959; /* Darker gray when active */
+}
+
+.add-org-btn {
+  background-color: #509784; /* Green background color */
+  color: white; /* White text color */
+}
+
+.add-org-btn:hover {
+  background-color: #2a433e; /* Darker green on hover */
+}
+
+.error-message {
+  color: red; /* Red text color for errors */
+  font-size: 0.875rem; /* Slightly smaller font size */
+  margin-top: -10px; /* Negative margin to bring closer to input */
+  margin-bottom: 10px; /* Adds space below the error */
+}
+
+
+.admin-buttons {
+  display: flex; /* Uses flexbox for layout */
+  gap: 10px; /* Adds space between buttons */
+  margin-top: 10px; /* Adds space above the buttons */
+  justify-content: center; /* Centers buttons horizontally */
+  position: absolute; /* Absolute positioning */
+  bottom: 20px; /* Positions buttons at the bottom */
+  left: 50%; /* Centers buttons horizontally */
+  transform: translateX(-50%); /* Centers buttons using transform */
+}
+
+.admin-buttons button {
+  padding: 6px 12px; /* Smaller padding for smaller buttons */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effects */
+  width: auto; /* Auto width */
+  max-width: 150px; /* Maximum width for the buttons */
+}
+
+.delete-btn {
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effects */
+  width: 120px; /* Fixed width */
+  background-color: #652a25; /* Dark red background */
+  color: white; /* White text color */
+  margin: 0 5px; /* Adds margin to the sides */
+  justify-content: center; /* Centers text horizontally */
+  text-align: center; /* Centers text */
+}
+
+.delete-btn:hover {
+  background-color: #e53935; /* Lighter red on hover */
+}
+
+.edit-btn {
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effects */
+  width: 120px; /* Fixed width */
+  background-color: #4c7192; /* Blue background color */
+  color: white; /* White text color */
+  margin: 0 5px; /* Adds margin to the sides */
+}
+
+.edit-btn:hover {
+  background-color: #5facd3; /* Lighter blue on hover */
+}
+
+.admin-buttons-wrapper {
+  display: flex; /* Uses flexbox for layout */
+  justify-content: flex-start; /* Aligns buttons to the left */
+  gap: 10px; /* Adds space between buttons */
+  width: 100%; /* Full width of the parent */
+  position: absolute; /* Absolute positioning */
+  top: 20px; /* Positions buttons near the top */
+  left: 50%; /* Centers buttons horizontally */
+  transform: translateX(-50%); /* Centers buttons using transform */
+}
+
+.form-overlay {
+  position: fixed; /* Fixes the overlay to the viewport */
+  top: 0; /* Positions overlay at the top */
+  left: 0; /* Positions overlay at the left */
+  width: 100%; /* Full width of the viewport */
+  height: 100%; /* Full height of the viewport */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex; /* Uses flexbox to center content */
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  z-index: 1000; /* Ensures overlay is above other content */
+}
+
+.form-container {
+  background: white; /* White background for the form */
+  padding: 20px; /* Padding inside the form */
+  border-radius: 10px; /* Rounds the corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%; /* Ensure the form takes the full width */
+  max-width: 600px; /* Maximum width for the form */
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+.form-container form {
+  display: flex; /* Uses flexbox for layout */
+  flex-direction: column; /* Stacks elements vertically */
+  gap: 20px; /* Adds space between form fields */
+}
+
+.form-container input, .form-container textarea, .form-container select {
+  margin-bottom: 15px; /* Adds space below each element */
+  padding: 12px; /* Adds padding inside the elements */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 5px; /* Rounds the corners */
+  width: 100%; /* Ensure input fields take up the full width */
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.form-container button {
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 16px; /* Font size for button text */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effects */
+  margin-right: 15px; /* Adds space between buttons */
+}
+
+.form-container button[type="submit"] {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text color */
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.form-container button[type="button"] {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text color */
+}
+
+.form-container button[type="button"]:hover {
+  background-color: #e53935; /* Darker red on hover */
+}
+
+.org-list.blurred {
+  filter: blur(5px); /* Blurs the content */
+}
+
+.checkbox-group {
+  display: flex; /* Uses flexbox for layout */
+  flex-wrap: wrap; /* Allows checkboxes to wrap to the next line */
+  gap: 10px; /* Adds space between checkboxes */
+  margin-bottom: 10px; /* Adds space below the group */
+}
+
+.checkbox-group label {
+  display: flex; /* Uses flexbox to align items */
+  align-items: center; /* Centers checkboxes vertically */
+  gap: 5px; /* Adds space between checkbox and label text */
+}
+
+
+.manage-donation-types-btn {
+  background-color: #0e3251; /* צבע רקע */
+  color: white; /* צבע טקסט */
+  padding: 10px 20px; /* ריווח פנימי */
+  border-radius: 5px; /* פינות מעוגלות */
+  cursor: pointer; /* מצביע לעכבר */
+  margin-left: 10px; /* רווח בין הכפתורים */
+}
+
+.manage-donation-types-btn:hover {
+  background-color: #031f2d; /* שינוי צבע בעת מעבר */
+}
+
+.buttons-container {
+  display: flex; /* Uses flexbox to display buttons in a row */
+  gap: 20px; /* Adds space between the buttons */
+  justify-content: center; /* Centers the buttons horizontally */
+  margin-top: 20px; /* Adds space above the buttons */
+}

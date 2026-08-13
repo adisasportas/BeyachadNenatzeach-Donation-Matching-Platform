@@ -1,0 +1,223 @@
+.messages-container {
+  padding: 20px; /* Adds padding inside the container */
+  background-image: url('../../images/message.jpg'); /* Background image for the messages container */
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-color: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent black overlay */
+  background-blend-mode: overlay; /* Blends the background color and image */
+  min-height: 100vh; /* Ensures the container covers the full viewport height */
+}
+
+.messages-header {
+  display: flex; /* Sets up a flexbox layout for the header */
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Centers the content vertically */
+  position: relative; /* Allows for positioning of child elements relative to the header */
+  margin-top: -40px; /* Moves the header slightly higher */
+}
+
+.messages-header h1 {
+  color: white; /* Sets the color of the header text */
+}
+
+.unread-count {
+  background-color: red; /* Red background for the unread message count */
+  color: white; /* White text color for the unread count */
+  border-radius: 50%; /* Makes the count a circle */
+  padding: 5px 10px; /* Adds padding inside the unread count circle */
+  position: absolute; /* Positions the unread count absolutely within the header */
+  right: 10px; /* Positions the count 10px from the right */
+}
+
+.btn-send-message {
+  padding: 10px 20px; /* Adds padding inside the button */
+  background-color: #90ceea; /* Sets the button's background color */
+  color: white; /* Sets the button's text color */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Adds smooth transitions for hover effects */
+  position: fixed; /* Fixes the button's position on the screen */
+  top: 120px; /* Positions the button 120px from the top */
+  left: 20px; /* Positions the button 20px from the left */
+}
+
+.btn-send-message:hover {
+  background-color: #005f8b; /* Darkens the button on hover */
+  transform: scale(1.05); /* Slightly enlarges the button on hover */
+}
+
+.messages-list-wrapper {
+  max-height: 60vh; /* Limits the height to ensure visibility of the footer */
+  overflow-y: auto; /* Enables vertical scrolling if content exceeds the height */
+  margin-bottom: 250px; /* Adds space between the last message and the footer */
+}
+
+.messages-list {
+  list-style: none; /* Removes bullet points from the list */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+}
+
+.message-item {
+  padding: 10px; /* Adds padding inside each message item */
+  border-bottom: 1px solid #ccc; /* Adds a bottom border to separate messages */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  position: relative; /* Positions child elements relative to this item */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  margin-bottom: 10px; /* Adds space between messages */
+}
+
+.message-item.unread {
+  font-weight: bold; /* Makes unread messages bold */
+}
+
+.message-item.read {
+  color: gray; /* Changes the text color of read messages to gray */
+}
+
+.message-item button {
+  margin-left: 10px; /* Adds space to the left of the buttons */
+  padding: 5px 10px; /* Adds padding inside the buttons */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  display: inline-block; /* Ensures buttons do not shrink */
+  min-width: 100px; /* Sets a minimum width for buttons */
+}
+
+.btn {
+  padding: 10px 20px; /* Adds padding inside the button */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Adds smooth transitions for hover effects */
+}
+
+.btn:hover {
+  transform: scale(1.05); /* Slightly enlarges the button on hover */
+}
+
+.btn-unread {
+  background-color: #69b1b1; /* Background color for the unread button */
+  color: white; /* Sets the text color to white */
+}
+
+.btn-unread:hover {
+  background-color: #98c8ca; /* Changes the background color on hover */
+}
+
+.btn-view {
+  background-color: #77b1d8; /* Background color for the view button */
+  color: white; /* Sets the text color to white */
+}
+
+.btn-view:hover {
+  background-color: #90abbd; /* Changes the background color on hover */
+}
+
+.modal-overlay {
+  position: fixed; /* Fixes the modal overlay to the viewport */
+  top: 0; /* Aligns the overlay to the top of the viewport */
+  left: 0; /* Aligns the overlay to the left of the viewport */
+  right: 0; /* Stretches the overlay to the right edge */
+  bottom: 0; /* Stretches the overlay to the bottom edge */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex; /* Uses flexbox to center the modal */
+  justify-content: center; /* Centers the modal horizontally */
+  align-items: center; /* Centers the modal vertically */
+  z-index: 1000; /* Ensures the modal appears on top of other elements */
+}
+
+.modal-content {
+  background: white; /* Sets the modal's background to white */
+  padding: 20px; /* Adds padding inside the modal */
+  border-radius: 5px; /* Rounds the corners of the modal */
+  max-width: 500px; /* Limits the maximum width of the modal */
+  width: 100%; /* Ensures the modal takes up the full width if it's smaller than max-width */
+  text-align: center; /* Centers text within the modal */
+  max-height: 80vh; /* Limits the modal's height to 80% of the viewport height */
+  overflow-y: auto; /* Adds vertical scrolling if the content exceeds the height */
+}
+
+.btn-close {
+  margin-top: 20px; /* Adds space above the close button */
+  padding: 10px 20px; /* Adds padding inside the button */
+  background-color: #d17485; /* Background color for the close button */
+  color: white; /* Sets the text color to white */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Adds smooth transitions for hover effects */
+}
+
+.btn-close:hover {
+  background-color: #bb5d6d; /* Changes the background color on hover */
+  transform: scale(1.05); /* Slightly enlarges the button on hover */
+}
+
+.form-overlay {
+  position: fixed; /* Fixes the form overlay to the viewport */
+  top: 0; /* Aligns the overlay to the top of the viewport */
+  left: 0; /* Aligns the overlay to the left of the viewport */
+  width: 100%; /* Stretches the overlay to the full width of the viewport */
+  height: 100%; /* Stretches the overlay to the full height of the viewport */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex; /* Uses flexbox to center the form */
+  align-items: center; /* Centers the form vertically */
+  justify-content: center; /* Centers the form horizontally */
+  z-index: 1000; /* Ensures the form appears on top of other elements */
+}
+
+.form-container {
+  background: white; /* Sets the form's background to white */
+  padding: 20px; /* Adds padding inside the form */
+  border-radius: 10px; /* Rounds the corners of the form */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a shadow around the form for depth */
+}
+
+.form-container form {
+  display: flex; /* Uses flexbox for form layout */
+  flex-direction: column; /* Stacks form elements vertically */
+}
+
+.form-container label {
+  margin-bottom: 5px; /* Adds space below labels */
+  color: black; /* Sets the label color to black */
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+  margin-bottom: 10px; /* Adds space below each input field */
+  padding: 10px; /* Adds padding inside the fields */
+  border: 1px solid #ddd; /* Light gray border for the fields */
+  border-radius: 5px; /* Rounds the corners of the fields */
+}
+
+.form-container button {
+  padding: 10px 20px; /* Adds padding inside the button */
+  margin-top: 10px; /* Adds space above the button */
+  font-size: 16px; /* Sets the font size for the button text */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounds the corners of the button */
+  transition: background-color 0.3s; /* Adds a transition effect for background color changes */
+}
+
+.form-container button[type="submit"] {
+  background-color: #4caf50; /* Green background for submit buttons */
+  color: white; /* Sets the text color to white */
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #45a049; /* Darkens the background color on hover */
+}
+
+.form-container button[type="button"] {
+  background-color: #f44336; /* Red background for cancel buttons */
+  color: white; /* Sets the text color to white */
+}
+
+.form-container button[type="button"]:hover {
+  background-color: #e53935; /* Darkens the background color on hover */
+}

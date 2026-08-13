@@ -1,0 +1,315 @@
+.donation-page {
+  display: flex; /* Sets up a flexbox layout for the donation page */
+  flex-direction: column; /* Aligns children (content) vertically */
+  justify-content: flex-start; /* Aligns content to the top of the page */
+  align-items: center; /* Centers content horizontally */
+  height: 100vh; /* Sets the height to the full height of the viewport */
+  padding: 20px; /* Adds padding inside the container */
+  box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+  background: url('../../images/createDonPic.jpg') no-repeat center center; /* Sets a background image centered both vertically and horizontally without repeating */
+  background-size: cover; /* Ensures the background image covers the entire container */
+  overflow: hidden; /* Hides any content that overflows the container */
+  padding-bottom: 150px; /* Adds extra padding at the bottom */
+}
+
+.donation-container {
+  width: 100%; /* Container takes up the full width of its parent */
+  max-width: 1600px; /* Increase the max-width to 1600px or more as needed */
+  padding: 20px; /* Adds padding inside the container */
+  background: rgba(237, 213, 213, 0.9); /* Semi-transparent pink background */
+  border-radius: 10px;  /* Rounds the corners of the container */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the container */
+  box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+  display: flex; /* Sets up a flexbox layout for the container */
+  flex-direction: column; /* Aligns children vertically */
+  align-items: center; /* Centers content horizontally */
+  justify-content: flex-start; /* Aligns content to the top of the container */
+  margin-top: 20px; /* Adds space above the container */
+  flex-grow: 1; /* Allows the container to take up remaining available space */
+  overflow-y: auto;  /* Enables vertical scrolling if content overflows */
+}
+
+.donation-form {
+  display: flex; /* Sets up a flexbox layout for the form */
+  flex-direction: column; /* Aligns form elements vertically */
+  align-items: center; /* Centers form elements horizontally */
+  width: 100%; /* Form takes up the full width of its parent */
+}
+
+.columns-container {
+  display: flex; /* Sets up a flexbox layout for the columns */
+  justify-content: space-between; /* Spreads columns evenly with space between them */
+  width: 100%; /* Container takes up the full width of its parent */
+  margin-bottom: 20px; /* Adds margin to the bottom of the container */
+}
+
+.left-column,
+.right-column {
+  width: 48%; /* Each column takes up 48% of the container's width */
+  display: flex; /* Sets up a flexbox layout for the columns */
+  flex-direction: column; /* Aligns elements in each column vertically */
+}
+
+.donation-form h2 {
+  text-align: center; /* Centers the heading text horizontally */
+  color: #333; /* Sets the text color to dark gray */
+  margin-bottom: 30px; /* Adds margin to the bottom of the heading */
+}
+
+.input-field,
+.select-field,
+.textarea-field {
+  width: 100%; /* Each field takes up the full width of its parent */
+  padding: 15px; /* Adds padding inside the fields */
+  margin-bottom: 20px; /* Adds margin to the bottom of the fields */
+  border: 1px solid #ccc; /* Adds a light gray border */
+  border-radius: 4px; /* Rounds the corners of the fields */
+  box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.textarea-field {
+  height: 200px; /* Sets the height of the textarea */
+  resize: vertical; /* Allows the textarea to be resized vertically */
+}
+
+.image-upload-wrapper {
+  display: flex; /* Sets up a flexbox layout for the image upload section */
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Centers the content vertically */
+  flex-direction: column; /* Aligns content vertically */
+  margin-bottom: 60px; /* Adds a larger margin to the bottom */
+}
+
+.image-upload-label {
+  display: flex; /* Sets up a flexbox layout for the label */
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Centers the content vertically */
+  width: 200px; /* Sets the width of the label */
+  height: 200px; /* Sets the height of the label */
+  background-color: rgba(237, 213, 213, 0.9); /* Semi-transparent pink background */
+  color: #d17485; /* Sets the text color to pink */
+  border: 2px dashed #d17485; /* Adds a dashed pink border */
+  border-radius: 4px; /* Rounds the corners of the label */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  text-align: center; /* Centers the text horizontally */
+  margin-bottom: 20px; /* Adds margin to the bottom of the label */
+}
+
+.upload-icon {
+  font-size: 48px; /* Sets the font size of the upload icon */
+}
+
+.image-preview {
+  display: none; /* Hides the image preview by default */
+  margin-top: 20px; /* Adds margin to the top of the preview */
+  max-width: 100%; /* Limits the width of the preview to the container's width */
+  border-radius: 4px; /* Rounds the corners of the preview */
+}
+
+.file-name {
+  margin-top: 10px; /* Adds margin to the top of the file name */
+  color: #d17485; /* Sets the text color to pink */
+}
+
+.remove-image {
+  margin-top: 10px; /* Adds margin to the top of the remove button */
+  background-color: #d17485; /* Sets the background color to pink */
+  color: white; /* Sets the text color to white */
+  padding: 5px 10px; /* Adds padding inside the button */
+  border: none; /* Removes the default border */
+  border-radius: 4px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+}
+
+.save-button-wrapper {
+  display: flex; /* Sets up a flexbox layout for the save button section */
+  justify-content: center; /* Centers the button horizontally */
+  margin-top: 0; /* Removes the top margin */
+}
+
+.save-button,
+.match-check-button {
+  width: 300px; /* Sets the width of the buttons */
+  padding: 15px; /* Adds padding inside the buttons */
+  border: none; /* Removes the default border */
+  border-radius: 4px; /* Rounds the corners of the buttons */
+  background-color: #d17485; /* Sets the background color to pink */
+  color: white; /* Sets the text color to white */
+  font-size: 16px; /* Sets the font size of the button text */
+  font-weight: bold; /* Makes the button text bold */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.save-button:hover,
+.match-check-button:hover {
+  background-color: #b56372; /* Changes the background color on hover */
+}
+
+.matching-container {
+  display: flex; /* Uses flexbox layout for child elements */
+  flex-wrap: wrap; /* Wraps content onto new lines when necessary */
+  gap: 20px; /* Adds space between boxes */
+  justify-content: center; /* Centers the items horizontally */
+  margin-top: 5px; /* Adds a small space above the container */
+  margin-bottom: 60px; /* Adds space at the bottom of the container */
+  flex-grow: 1; /* Allows the container to take up remaining available space */
+  overflow-y: auto; /* Enables vertical scrolling if content overflows */
+}
+
+.org-box {
+  flex: 1 1 calc(33.333% - 20px); /* Adjust the percentage if needed for more space */
+  max-width: calc(33.333% - 20px); /* Increase the width proportionally if you need bigger boxes */
+  min-width: 300px; /* Set a minimum width for each box */
+  height: auto; /* Allow height to adjust based on content */
+  padding: 20px; /* Increase padding for better spacing */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  border-radius: 10px; /* Rounds the corners of the box */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow around each box */
+  display: flex; /* Uses flexbox layout for the content inside each box */
+  flex-direction: column; /* Aligns content vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  overflow: hidden; /* Hides content that overflows the box */
+}
+
+
+.org-box.expanded {
+  transform: scale(1.05); /* Scales the box up by 5% when expanded */
+  width: 100%; /* The box takes up the full width of the container */
+  height: auto; /* Adjusts height based on the expanded content */
+}
+
+.donors-section {
+  display: flex; /* Sets up a flexbox layout for the donors section */
+  flex-direction: column; /* Aligns content vertically */
+  margin-top: 5px; /* Adds margin to the top of the section */
+  margin-bottom: 10px; /* Adds margin to the bottom of the section */
+  height: 350px; /* Sets the height of the donors section */
+  overflow-y: auto; /* Enables vertical scrolling if content overflows */
+}
+
+.donor-card {
+  background-color: #f9f9f9; /* Sets the background color to light gray */
+  border-radius: 5px; /* Rounds the corners of the donor card */
+  padding: 10px; /* Adds padding inside the card */
+  margin-top: 5px; /* Adds margin to the top of the card */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow to the card */
+}
+
+.best-match {
+  border: 2px solid gold; /* Adds a gold border to indicate the best match */
+  background-color: #fffbea; /* Sets the background color to a light yellow */
+}
+
+.best-match-indicator {
+  color: gold; /* Sets the text color to gold */
+  font-weight: bold; /* Makes the text bold */
+}
+
+footer {
+  text-align: center; /* Centers the text horizontally */
+  padding: 20px; /* Adds padding inside the footer */
+  background-color: #f8f8f8; /* Sets the background color to light gray */
+  width: 100%; /* Footer takes up the full width of its parent */
+  position: relative; /* Positions the footer relative to its normal position */
+  z-index: 1; /* Ensures the footer is on top of other elements */
+}
+
+
+.action-buttons {
+  margin-top: 10px; /* Adds margin to the top of the action buttons */
+  display: flex; /* Sets up a flexbox layout for the buttons */
+  gap: 10px; /* Adds space between the buttons */
+  justify-content: center; /* Centers the buttons horizontally */
+}
+
+.mark-done-button,
+.delete-button {
+  padding: 5px 10px; /* Adds padding inside the buttons */
+  border: none; /* Removes the default border */
+  border-radius: 4px; /* Rounds the corners of the buttons */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  font-weight: bold; /* Makes the button text bold */
+  width: 100%; /* Expands the button to take up the full width available */
+  text-align: center; /* Centers the text inside the button */
+}
+
+.mark-done-button {
+  background-color: #4caf50; /* Sets the background color to green */
+  color: white; /* Sets the text color to white */
+}
+
+.delete-button {
+  background-color: #f44336; /* Sets the background color to red */
+  color: white; /* Sets the text color to white */
+}
+
+.mark-done-button:hover {
+  background-color: #45a049; /* Darkens the background color on hover */
+}
+
+.delete-button:hover {
+  background-color: #e53935; /* Darkens the background color on hover */
+}
+
+
+.match-delete-button-wrapper {
+  display: flex; /* Sets up a flexbox layout for the delete button wrapper */
+  justify-content: center; /* Centers the button horizontally */
+  margin-top: auto; /* Uses auto margin to push the button to the bottom */
+}
+
+.match-delete-button {
+  background-color: #ff4d4d; /* Sets the background color to red */
+  color: white; /* Sets the text color to white */
+  font-size: 16px; /* Sets the font size */
+  font-weight: bold; /* Makes the text bold */
+  padding: 10px 20px; /* Adds padding inside the button */
+  border: none; /* Removes the default border */
+  border-radius: 5px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  transition: background-color 0.3s ease; /* Smoothly changes the background color on hover */
+}
+
+.match-delete-button:hover {
+  background-color: #e63939; /* Darkens the background color on hover */
+}
+
+.match-delete-button:focus {
+  outline: none; /* Removes the default outline on focus */
+  box-shadow: 0 0 10px #ff4d4d; /* Adds a red glow effect on focus */
+}
+
+
+.send-message-button {
+  background-color: #007bff; /* Sets the background color to blue */
+  color: white; /* Sets the text color to white */
+  padding: 5px 10px; /* Adds padding inside the button */
+  border: none; /* Removes the default border */
+  border-radius: 4px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+  font-weight: bold; /* Makes the button text bold */
+  width: 100%; /* Expands the button to take up the full width available */
+  text-align: center; /* Centers the text inside the button */
+}
+
+.send-message-button:hover {
+  background-color: #0056b3; /* Darkens the background color on hover */
+}
+
+@media (max-width: 768px) {
+  .org-box {
+    flex: 1 1 calc(50% - 20px); /* Two items per row on smaller screens */
+    max-width: calc(50% - 20px); /* Limits width to 50% minus 20px gap */
+  }
+}
+
+@media (max-width: 480px) {
+  .org-box {
+    flex: 1 1 100%; /* One item per row on very small screens */
+    max-width: 100%; /* The box takes up the full width */
+  }
+}
+

@@ -1,0 +1,160 @@
+/* Styling for the navigation bar */
+.navbar {
+  background-color: #e6a1a8; /* Sets the background color of the navbar to match your theme */
+  display: flex; /* Uses flexbox to arrange navbar items horizontally */
+  justify-content: space-between; /* Spaces items evenly with space between them */
+  align-items: center; /* Vertically centers items within the navbar */
+  padding: 10px 20px; /* Adds padding inside the navbar for spacing */
+  font-family: 'Arial', sans-serif; /* Sets the font family for the text in the navbar */
+}
+
+/* Styling for containers holding the logo and time, and main navbar links */
+.logo-and-time, .navbar-main-links {
+  display: flex; /* Uses flexbox to arrange items horizontally */
+  align-items: center; /* Vertically centers the items */
+}
+
+/* Styling for the hamburger icon */
+.hamburger {
+  display: block; /* Ensures the hamburger icon is always displayed */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+}
+
+/* Styling for the main navigation menu and link container */
+.nav-menu, .navbar-main-links {
+  list-style-type: none; /* Removes default list styling (bullets) */
+  gap: 10px; /* Adds space between menu items */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+}
+
+/* Styling for navigation links and logout button */
+.nav-link, .logout-button {
+  text-decoration: none; /* Removes the underline from links */
+  font-weight: bold; /* Makes the text bold */
+  color: white; /* Sets the text color to white */
+  font-size: 11px; /* Sets the font size */
+  background-color: #d17485; /* Sets the background color */
+  border-radius: 20px; /* Rounds the corners of the button */
+  padding: 10px 20px; /* Adds padding inside the buttons */
+  border: none; /* Removes the border from the logout button */
+  transition: background-color 0.3s; /* Adds a smooth transition effect when the background color changes on hover */
+}
+
+/* Hover effect for navigation links and logout button */
+.nav-link:hover, .logout-button:hover {
+  background-color: #bb5d6d; /* Darkens the background color when hovered */
+}
+
+/* Styling for the current time display */
+.current-time {
+  font-size: 18px; /* Sets the font size for the time display */
+  color: white; /* Sets the text color to white */
+  padding-left: 20px; /* Adds padding to the left of the time display */
+}
+
+/* Styling for the hamburger menu when opened */
+.nav-menu-hamburger {
+  list-style-type: none; /* Removes default list styling (bullets) */
+  position: fixed; /* Fixes the position of the menu relative to the viewport */
+  top: 65px; /* Positions the menu 65px from the top of the screen */
+  right: 0; /* Aligns the menu to the right side of the screen */
+  width: 250px; /* Sets a fixed width for the menu */
+  height: 90vh; /* Sets the height to 90% of the viewport height */
+  overflow-y: auto; /* Adds a scrollbar if the content exceeds the height */
+  transition: right 0.3s; /* Adds a smooth sliding transition effect */
+  padding-top: 5px; /* Adds padding at the top of the menu */
+  z-index: 1000; /* Ensures the menu is above other content */
+  display: flex; /* Uses flexbox to arrange items vertically */
+  flex-direction: column; /* Aligns items in a column */
+  justify-content: center; /* Centers the items vertically */
+  background-color: rgba(183, 44, 90, 0.1); /* Sets a semi-transparent background color */
+}
+
+/* Additional styling for the hamburger menu when it is opened */
+.nav-menu-hamburger.open {
+  right: 0; /* Ensures the menu slides in from the right when opened */
+}
+
+/* Styling for individual links in the hamburger menu */
+.nav-link-hamburger {
+  text-decoration: none; /* Removes the underline from links */
+  font-weight: bold; /* Makes the text bold */
+  color: white; /* Sets the text color to white */
+  font-size: 11px; /* Sets the font size */
+  background-color: #d17485; /* Sets the background color */
+  border-radius: 20px; /* Rounds the corners of the buttons */
+  padding: 10px 20px; /* Adds padding inside the buttons */
+  display: block; /* Displays each link as a block element */
+  transition: background-color 0.3s; /* Adds a smooth transition effect when the background color changes on hover */
+  margin-bottom: 10px; /* Adds space between each button */
+}
+
+/* Hover effect for links in the hamburger menu */
+.nav-link-hamburger:hover {
+  background-color: #bb5d6d; /* Darkens the background color when hovered */
+}
+
+/* Styling for the logout button in the hamburger menu */
+.logout-button-hamburger {
+  background-color: #d17485; /* Sets the background color for the logout button */
+}
+
+/* Styling for a specific type of link in the hamburger menu */
+.nav-link-hamburger-in {
+  text-decoration: none; /* Removes the underline from links */
+  font-weight: bold; /* Makes the text bold */
+  color: rgb(0, 0, 0); /* Sets the text color to black */
+  font-size: 11px; /* Sets the font size */
+  border-radius: 20px; /* Rounds the corners of the buttons */
+  padding: 10px 20px; /* Adds padding inside the buttons */
+  display: block; /* Display each link as a separate block */
+  transition: background-color 0.3s; /* Adds a smooth transition effect when the background color changes on hover */
+  margin-bottom: 10px; /* Add space between buttons */
+  background-color: #a8ddc3; /* Sets a green background color for this type of link */
+}
+
+/* Hover effect for the logout button in the hamburger menu */
+.logout-button-hamburger:hover {
+  background-color: #bb5d6d; /* Darkens the button on hover */
+}
+
+/* Styling for notification badges */
+.badge {
+  background-color: red; /* Sets the background color of the badge to red */
+  color: white; /* Sets the text color inside the badge to white */
+  border-radius: 50%; /* Makes the badge circular */
+  padding: 2px 8px; /* Adds padding inside the badge */
+  margin-left: 5px; /* Adds space to the left of the badge */
+  font-size: 0.8em; /* Sets the font size slightly smaller */
+}
+
+/* Responsive design adjustments for screens with a maximum width of 768px */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none; /* Hides the main navigation menu by default */
+    flex-direction: column; /* Arranges items in a column when displayed */
+    position: fixed; /* Fixes the menu position relative to the viewport */
+    top: 0; /* Aligns the menu to the top of the screen */
+    right: 0; /* Aligns the menu to the right side of the screen */
+    height: 100vh; /* Sets the menu height to fill the entire screen */
+    width: 100%; /* Sets the menu width to fill the entire screen */
+    background-color: #e6a1a8; /* Matches the navbar background color */
+    align-items: center; /* Center items vertically */
+    justify-content: start; /* Align items to start from top */
+    padding-top: 60px; /* Adds padding at the top of the menu */
+    z-index: 10; /* Ensures the menu is above other content */
+  }
+
+  .nav-menu.open {
+    display: flex; /* Display when the menu is toggled open */
+  }
+
+  .hamburger {
+    z-index: 11; /* Ensures the hamburger icon is above the nav-menu */
+  }
+
+  .navbar-main-links {
+    display: none; /* Ensures main links are hidden in small screens */
+  }
+}

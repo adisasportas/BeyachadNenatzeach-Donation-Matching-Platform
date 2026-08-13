@@ -1,0 +1,25 @@
+.footer {
+    background-color: #e6a1a8; /* Sets the background color of the footer to a light pinkish shade. */
+    color: #040404; /* Sets the text color in the footer to a dark gray (almost black). */
+    padding: 20px; /* Adds 20px of padding inside the footer for spacing around the content. */
+    text-align: center; /* Centers the text and content inside the footer horizontally. */
+    position: fixed; /* Fixes the footer to the bottom of the screen, keeping it visible when scrolling. */
+    bottom: 0; /* Positions the footer at the very bottom of the screen. */
+    width: 100%; /* Ensures the footer spans the full width of the screen. */
+}
+
+.footer .link-container {
+    display: flex; /* Uses flexbox to lay out the links inside the container. */
+    justify-content: center; /* Centers the links horizontally within the container. */
+    gap: 20px; /* Adds 20px of space between each link icon. */
+    margin-top: 10px; /* Adds 10px of margin above the container to separate it from other elements. */
+}
+
+.footer .link-container .icon {
+    width: 30px; /* Sets the width of each icon to 30px. */
+    height: 30px; /* Sets the height of each icon to 30px. */
+}
+
+.footer .copyright {
+    margin-bottom:10px; /* Adds 10px of margin below the copyright text to separate it from the bottom of the footer. */
+}
