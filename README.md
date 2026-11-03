@@ -1,83 +1,51 @@
-# Getting Started with Create React App
+# Donation Matching Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React web app that connects people who want to donate items with people who need them. Users register, post a donation, search existing donations, and get matched automatically by category and district.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Registration and login (Firebase Authentication), with protected routes for signed-in users
+- Post a donation with category and district
+- Search donations with filters
+- Matching algorithm: a donation scores +20 for a matching category and +10 for the same district; the best-scored results are shown first
+- Messages and a contact page
+- Settings page for the user profile
 
-### `npm start`
+## Tech stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+React, React Router 6, React Hook Form, Bootstrap 5, Firebase (Authentication and Firestore).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project structure
 
-### `npm test`
+```
+src/
+  components/
+    algorithem/   matching logic (MatchDonations.js)
+    screens/      pages: HomePage, LogIn, Registertion, AddDonation, SearchDonations, Messages, Settings, ...
+    navbar, footer, signOut
+  services/
+    contexts/     AuthContext, UserContext
+    firebase/     Firestore access
+    protectedRoute/
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting started
 
-### `npm run build`
+```bash
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app opens at http://localhost:3000.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Scripts
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Command | What it does |
+|---|---|
+| `npm start` | Run in development mode |
+| `npm test` | Run the tests |
+| `npm run build` | Production build in `build/` |
 
-### `npm run eject`
+## Notes
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-npm i
-npm i react-router-dom
-npm install react-icons
-npm install bootstrap@5.3.3
-npm i firebase
-npm i react-firebase-hooks
-npm install react-hook-form
-npm install react-toastify
-
-npm install crypto-js
-npm install file-saver
-npm install xlsx
+The Firebase web configuration lives in `src/services/firebase/FireStore.js`. Web API keys are not secret, but access should be restricted with Firestore security rules.
