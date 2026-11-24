@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { useUser } from "../../services/contexts/UserContext"; // Correct path to the context
 import { RxSwitch } from "react-icons/rx"; // Import the icon
+import { isAdmin as isAdminUser } from "../../services/admin";
 
 // The AboutMe component displays and allows editing of the "About Me" section for admin users.
 const AboutMe = () => {
@@ -41,9 +42,7 @@ const AboutMe = () => {
         if (userSnap.exists()) {
           const userData = userSnap.data(); // Extract user data
           console.log("User Data:", userData); // Debug log for user data
-          if (userData.userName === "admin" && userData.fullName === "admin") {
-            setIsAdmin(true); // Set the user as admin if both username and fullname are "admin"
-          }
+          setIsAdmin(isAdminUser(currentUser));
         } else {
           console.log("No such user document!"); // Log if the user document does not exist
         }

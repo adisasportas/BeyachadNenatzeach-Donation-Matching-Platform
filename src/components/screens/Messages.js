@@ -5,7 +5,6 @@ import {
   updateDoc,
   doc,
   onSnapshot,
-  getFirestore,
   query,
   collection,
   where,
@@ -15,6 +14,7 @@ import "../screensCSS/Messages.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../services/contexts/AuthContext";
+import { isAdmin as isAdminUser } from "../../services/admin";
 
 const fetchMessages = async (user, setMessages, setUnreadCount) => {
   // Function to fetch messages for the current user.
@@ -75,35 +75,7 @@ const Messages = () => {
 
   // useEffect to check if the current user is an admin.
   useEffect(() => {
-    const checkAdmin = async () => {
-      const user = currentUser || localCurrentUser; // Use the currentUser or fallback to localCurrentUser.
-      if (!user) return;
-
-      const db = getFirestore(); // Initialize Firestore database instance.
-      const usersRef = collection(db, "users"); // Reference the "users" collection in Firestore.
-      const q = query(
-        usersRef,
-        where("userName", "==", "admin"), // Add condition to query for users with userName "admin".
-        where("fullName", "==", "admin") // Add condition to query for users with fullName "admin".
-      );
-
-      try {
-        const querySnapshot = await getDocs(q); // Execute the query to get matching documents.
-        if (!querySnapshot.empty) {
-          const adminDoc = querySnapshot.docs[0]; // Get the first document from the query results.
-
-          if (adminDoc.id === user.uid) {
-            setIsAdmin(true); // Set the user as admin if the IDs match.
-          }
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error); // Log any errors that occur during the admin check.
-      }
-    };
-
-    if (currentUser || localCurrentUser) {
-      checkAdmin(); // Call the function to check admin status.
-    }
+    setIsAdmin(isAdminUser(currentUser || localCurrentUser));
   }, [currentUser, localCurrentUser]); // Dependencies array to run this effect when currentUser or localCurrentUser changes.
 
   // useEffect to fetch messages for the current user.

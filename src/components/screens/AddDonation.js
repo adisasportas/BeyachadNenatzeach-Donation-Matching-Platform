@@ -8,6 +8,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
 import { matchDonations } from "../../components/algorithem/MatchDonations";
 import { getFirestore, getDocs } from "firebase/firestore";
+import { isAdmin as isAdminUser } from "../../services/admin";
 
 // The AddDonation component handles the creation of new donations and the matching process for admins.
 function AddDonation() {
@@ -37,13 +38,7 @@ function AddDonation() {
     if (!user) {
       navigate("/Log_In"); // If no user is found, navigate to the login page
     } else {
-      const checkAdminStatus = async () => {
-        // Function to check if the current user is an admin.
-        if (user.userName === "admin" && user.fullName === "admin") {
-          setIsAdmin(true); // Set the user as admin if both username and fullname are "admin"
-        }
-      };
-      checkAdminStatus(); // Call the function to check admin status
+      setIsAdmin(isAdminUser(currentUser || user));
     }
   }, [user, currentUser, navigate]); // The effect runs whenever the user or currentUser changes
 
@@ -286,7 +281,7 @@ function AddDonation() {
         message: messageContent, // Set the message content.
         read: false, // Mark the message as unread.
         receiverId: donation.idUser, // The user who should receive the message
-        senderId: user.id, // Set the ID of the user who is sending the message. Admin.
+        senderId: currentUser?.uid || user.id, // The admin who is sending the message.
         subject: `Donation match for ${organization.nameAssociations}`, // Set the subject of the message.
       });
 

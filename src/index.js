@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./components/screens/HomePage";
@@ -18,7 +18,7 @@ import { AuthProvider } from "../src/services/contexts/AuthContext";
 import ProtectedUserRoute from "../src/services/protectedRoute/ProtectedUserRoute";
 import { UserProvider } from "./services/contexts/UserContext";
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   // Wrapping the entire app with AuthProvider for authentication state management
   <AuthProvider>
     <UserProvider>
@@ -96,6 +96,5 @@ ReactDOM.render(
         <Footer />
       </BrowserRouter>
     </UserProvider>
-  </AuthProvider>,
-  document.getElementById("root") // Render the app into the root DOM element
+  </AuthProvider>
 );
