@@ -11,12 +11,21 @@ import {
   where,
   getDocs,
   collection,
+  deleteField,
 } from "firebase/firestore";
 import { useUser } from "../../services/contexts/UserContext";
-import { getAuth, deleteUser } from "firebase/auth";
-import CryptoJS from "crypto-js";
+import { getAuth, deleteUser, updatePassword } from "firebase/auth";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { isAdmin as isAdminUser } from "../../services/admin";
+
+// Removes password fields so they are never shown or written to Firestore.
+// Older accounts may still have them stored; `deleteField()` clears them.
+const stripPasswords = ({ password, confirmPassword, ...rest }) => rest;
+const clearLegacyPasswords = {
+  password: deleteField(),
+  confirmPassword: deleteField(),
+};
 
 function Settings() {
   // Component-level state management
@@ -36,8 +45,6 @@ function Settings() {
   const [showPassword, setShowPassword] = useState(false); // State to manage the visibility of the password.
   const auth = getAuth(); // Get the authentication object.
 
-  const encryptionKey = "123"; // Encryption key for encrypting and decrypting passwords.
-
   // Function to fetch the profile data of the current user from Firestore
   useEffect(() => {
     const fetchProfile = async () => {
@@ -51,16 +58,15 @@ function Settings() {
         const docSnap = await getDoc(userDocRef); // Fetch the user's document.
         if (docSnap.exists()) {
           const userData = docSnap.data(); // Get the user data from the document.
+          // The password fields start empty: they are only for setting a new password.
           setProfile((prevProfile) => ({
             ...prevProfile,
-            ...userData,
-            password: decrypt(userData.password),
-            confirmPassword: decrypt(userData.confirmPassword),
-          })); // Update the profile state with the fetched data and decrypted passwords.
+            ...stripPasswords(userData),
+            password: "",
+            confirmPassword: "",
+          }));
 
-          if (userData.userName === "admin" && userData.fullName === "admin") {
-            setIsAdmin(true); // Set isAdmin to true if the user is an admin.
-          }
+          setIsAdmin(isAdminUser(docSnap.id));
         } else {
           console.error("No such document!");
         }
@@ -71,19 +77,6 @@ function Settings() {
 
     fetchProfile(); // Call the fetchProfile function to retrieve the user's profile data.
   }, [user]); // Re-run the useEffect when the user changes.
-
-  // Function to encrypt text
-  const encrypt = (text) => {
-    // Encrypt the given text using AES encryption and return it as a string.
-    return CryptoJS.AES.encrypt(text, encryptionKey).toString();
-  };
-
-  // Function to decrypt text
-  const decrypt = (ciphertext) => {
-    // Decrypt the given ciphertext using AES decryption.
-    const bytes = CryptoJS.AES.decrypt(ciphertext, encryptionKey);
-    return bytes.toString(CryptoJS.enc.Utf8); // Convert the decrypted bytes to a UTF-8 string and return it.
-  };
 
   // Function to handle input changes in the profile form
   const handleChange = (e) => {
@@ -103,19 +96,38 @@ function Settings() {
       return;
     }
 
+    // A new password is optional; when given it is changed in Firebase Auth only.
+    if (profile.password || profile.confirmPassword) {
+      if (profile.password !== profile.confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+      if (profile.password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+      }
+    }
+
     const userDocRef = doc(firebase, "users", user.docId); // Reference the user's document in Firestore.
-    const updatedProfile = {
-      ...profile,
-      password: encrypt(profile.password),
-      confirmPassword: encrypt(profile.confirmPassword),
-    }; // Create an updated profile object with encrypted passwords.
 
     try {
-      await updateDoc(userDocRef, updatedProfile); // Update the user's document in Firestore with the new profile data.
+      if (profile.password) {
+        await updatePassword(auth.currentUser, profile.password);
+      }
+      // Save the profile without passwords, and clear any legacy stored copy.
+      await updateDoc(userDocRef, {
+        ...stripPasswords(profile),
+        ...clearLegacyPasswords,
+      });
+      setProfile((prev) => ({ ...prev, password: "", confirmPassword: "" }));
       alert("Profile updated successfully!"); // Show a success alert.
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again."); // Show an error alert if the update fails.
+      if (error.code === "auth/requires-recent-login") {
+        alert("For security, please log out and log in again before changing your password.");
+      } else {
+        alert("Failed to update profile. Please try again."); // Show an error alert if the update fails.
+      }
     }
   };
 
@@ -175,7 +187,7 @@ function Settings() {
         const userData = querySnapshot.docs[0].data(); // Get the user data from the first matching document.
         setSearchedUser({
           docId: querySnapshot.docs[0].id,
-          ...userData,
+          ...stripPasswords(userData),
         }); // Update the searchedUser state with the found user's data.
       } else {
         // Show an alert if no user is found and reset the searchedUser state.
@@ -199,7 +211,11 @@ function Settings() {
     const userDocRef = doc(firebase, "users", searchedUser.docId);
 
     try {
-      await updateDoc(userDocRef, searchedUser); // Update the user's document with the new data.
+      const { docId, ...fields } = searchedUser;
+      await updateDoc(userDocRef, {
+        ...stripPasswords(fields),
+        ...clearLegacyPasswords,
+      }); // Update the user's document with the new data.
       alert("User updated successfully!"); // Show a success alert.
     } catch (error) {
       console.error("Error updating user:", error);
@@ -225,7 +241,7 @@ function Settings() {
 
         const deletedUserDocRef = doc(collection(firebase, "deletedUsers"));
         await setDoc(deletedUserDocRef, {
-          ...searchedUser,
+          ...stripPasswords(searchedUser),
           deletedAt: new Date().toISOString(),
         }); // Log the deletion by creating a document in the "deletedUsers" collection.
 
@@ -397,20 +413,23 @@ function Settings() {
                   />
                 </div>
                 <div className="form-control">
-                  <label htmlFor="password">Password:</label>
+                  <label htmlFor="password">New Password:</label>
                   <input
                     id="password"
-                    type={showPassword ? "text" : "password"} 
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={profile.password}
                     onChange={handleChange}
+                    placeholder="Leave empty to keep current password"
+                    autoComplete="new-password"
                   />
                 </div>
                 <div className="form-control">
-                  <label htmlFor="confirmPassword">Confirm Password:</label>
+                  <label htmlFor="confirmPassword">Confirm New Password:</label>
                   <input
                     id="confirmPassword"
-                    type={showPassword ? "text" : "password"} 
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
                     name="confirmPassword"
                     value={profile.confirmPassword}
                     onChange={handleChange}
@@ -567,21 +586,6 @@ function Settings() {
                           setSearchedUser({
                             ...searchedUser,
                             email: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="form-control">
-                      <label htmlFor="searchedPassword">Password:</label>
-                      <input
-                        id="searchedPassword"
-                        type={showPassword ? "text" : "password"} 
-                        name="password"
-                        value={searchedUser.password}
-                        onChange={(e) =>
-                          setSearchedUser({
-                            ...searchedUser,
-                            password: e.target.value,
                           })
                         }
                       />

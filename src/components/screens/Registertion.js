@@ -9,12 +9,11 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, deleteUser } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from "crypto-js";
 
 const Registration = () => {
   // Destructure methods from useForm for handling form state, validation, and submission.
@@ -27,74 +26,42 @@ const Registration = () => {
   } = useForm();
   const navigate = useNavigate(); // Initialize useNavigate to redirect users after form submission.
   const usersCollectionReference = collection(firebase, "users"); // Reference the "users" collection in Firestore.
-  const encryptionKey = "123"; // Define the encryption key for encrypting passwords.
 
-  // Function to check if a user with the given email or username already exists.
-  const checkUserExists = async (email, userName) => {
-    // Query Firestore to check for a user with the given email.
-    const emailQuery = query(
-      usersCollectionReference,
-      where("email", "==", email)
-    );
-    // Query Firestore to check for a user with the given username.
+  // Function to check if the username is already taken.
+  const isUserNameTaken = async (userName) => {
     const userNameQuery = query(
       usersCollectionReference,
       where("userName", "==", userName)
     );
-
-    const emailSnapshot = await getDocs(emailQuery); // Get the documents matching the email query.
-    const userNameSnapshot = await getDocs(userNameQuery); // Get the documents matching the username query.
-
-    // Return true if either query returns a result, indicating the user already exists.
-    return !emailSnapshot.empty || !userNameSnapshot.empty;
+    const userNameSnapshot = await getDocs(userNameQuery);
+    return !userNameSnapshot.empty;
   };
 
   // Function to create a new user in Firebase Auth and Firestore.
   const createUser = async (formData) => {
     try {
-      // Check if a user with the same email or username already exists.
-      const userExists = await checkUserExists(
+      // Create the Firebase Auth user first. Auth itself rejects an email that is
+      // already registered, and once signed in the app may read the users
+      // collection (the security rules do not allow anonymous reads).
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
         formData.email,
-        formData.userName
+        formData.password
       );
+      const firebaseUser = userCredential.user; // Get the Firebase user object.
 
-      if (userExists) {
-        // If the user exists, display an error notification.
-        toast.error(
-          "User with this email or username already exists. Please try again."
-        );
+      if (await isUserNameTaken(formData.userName)) {
+        // Undo the new Auth account so the email can be used again.
+        await deleteUser(firebaseUser);
+        toast.error("This username is already taken. Please choose another.");
       } else {
-        // Create a new user in Firebase Auth with email and password.
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          formData.email,
-          formData.password
-        );
-        const firebaseUser = userCredential.user; // Get the Firebase user object.
 
-        // Encrypt the password before saving it to Firestore.
-        const encryptedPassword = CryptoJS.AES.encrypt(
-          formData.password,
-          encryptionKey
-        ).toString();
-
-        // Encrypt the confirm password before saving it to Firestore.
-        const encryptedConfirmPassword = CryptoJS.AES.encrypt(
-          formData.confirmPassword,
-          encryptionKey
-        ).toString();
-
-        // Create a new user object with the form data and encrypted passwords.
+        // Passwords are handled only by Firebase Authentication and are never
+        // stored in Firestore, so they are left out of the profile document.
+        const { password, confirmPassword, ...profile } = formData;
         const newUser = {
-          ...formData, // Spread the form data.
+          ...profile,
           id: firebaseUser.uid, // Add the Firebase user ID.
-          email: formData.email,
-          userName: formData.userName,
-          fullName: formData.fullName,
-          phone: formData.phone,
-          district: formData.district,
-          password: encryptedPassword, // Save the encrypted password.
-          confirmPassword: encryptedConfirmPassword, // Save the encrypted confirm password.
         };
 
         // Save the new user document in the "users" collection in Firestore.
@@ -111,7 +78,11 @@ const Registration = () => {
       }
     } catch (e) {
       console.error("Error adding document:", e); // Log any errors that occur.
-      toast.error("An error occurred while creating the user."); // Display an error notification.
+      if (e.code === "auth/email-already-in-use") {
+        toast.error("A user with this email already exists.");
+      } else {
+        toast.error("An error occurred while creating the user."); // Display an error notification.
+      }
     }
   };
 

@@ -7,8 +7,6 @@ import {
   deleteDoc,
   doc,
   updateDoc,
-  query,
-  where,
 } from "firebase/firestore";
 import "../screensCSS/SearchDonations.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../../services/contexts/UserContext";
 import { RxSwitch } from "react-icons/rx";
 import { useForm } from "react-hook-form";
+import { isAdmin as isAdminUser } from "../../services/admin";
 
 function SearchDonations() {
   const { user: currentUser } = useUser(); // Destructure the current user from the useUser context.
@@ -49,45 +48,7 @@ function SearchDonations() {
     console.log("useEffect called with currentUser:", currentUser); // Log the current user when useEffect is called.
 
     // Function to check if the current user has admin rights
-    const checkAdmin = async () => {
-      if (!currentUser) {
-        // Check if the currentUser is null or undefined.
-        console.log("No currentUser, returning"); // Log if there is no current user.
-        return; // Return early if no current user.
-      }
-      console.log("Checking admin status for user:", currentUser); // Log the current user to check admin status.
-
-      const db = getFirestore(); // Initialize Firestore.
-      const usersRef = collection(db, "users"); // Reference the "users" collection in Firestore.
-      const q = query(
-        usersRef,
-        where("userName", "==", "admin"), // Condition to check if the userName is "admin".
-        where("fullName", "==", "admin") // Condition to check if the fullName is "admin".
-      ); // Create a query to find the admin user.
-
-      try {
-        const querySnapshot = await getDocs(q); // Get the documents matching the admin query.
-        if (!querySnapshot.empty) {
-          // Check if there are any documents returned.
-          const adminDoc = querySnapshot.docs[0]; // Get the first document from the query results.
-          console.log("Admin document ID:", adminDoc.id); // Log the admin document ID.
-
-          if (adminDoc.id === currentUser.id) {
-            // Check if the current user's ID matches the admin document ID.
-            console.log("Admin user found!"); // Log that the admin user was found.
-            setIsAdmin(true); // Set isAdmin to true if the current user is an admin.
-          } else {
-            console.log("Current user is not admin."); // Log that the current user is not an admin.
-          }
-        } else {
-          console.log("Admin user not found."); // Log that no admin user was found.
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error); // Log any errors that occur while checking admin status.
-      }
-    };
-
-    checkAdmin(); // Call the checkAdmin function to verify if the user is an admin.
+    setIsAdmin(isAdminUser(currentUser));
 
     // Function to fetch the list of associations from Firestore
     const fetchAssociations = async () => {

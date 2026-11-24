@@ -4,8 +4,7 @@ import { useUser } from "../../services/contexts/UserContext";
 import "./Navbar.css";
 import icon from "../../images/icon.jpg";
 import { signOutFromLoggedUser } from "../signOut/SignOut";
-import { firebase } from "../../services/firebase/FireStore";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { isAdmin as isAdminUser } from "../../services/admin";
 
 // The Navbar component handles the navigation bar and its functionalities.
 export default function Navbar() {
@@ -28,41 +27,7 @@ export default function Navbar() {
 
   // useEffect to check if the current user is an admin.
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!user || !user.id) {
-        console.log("No valid user found. User is:", user); // Logs a message if no valid user is found.
-        return;
-      }
-
-      console.log("Checking admin status for user:", user.id); // Logs the user ID being checked for admin status.
-
-      const db = firebase; // Initializes the Firestore database instance.
-      const usersRef = collection(db, "users"); // References the "users" collection in Firestore.
-      const q = query(
-        usersRef,
-        where("userName", "==", "admin"),
-        where("fullName", "==", "admin")
-      ); // Queries the collection to find a user with both "userName" and "fullName" equal to "admin".
-
-      try {
-        const querySnapshot = await getDocs(q); // Executes the query and retrieves matching documents.
-        if (!querySnapshot.empty) {
-          const adminDoc = querySnapshot.docs[0]; // Gets the first matching document.
-          if (adminDoc.id === user.id) {
-            console.log("User is an admin."); // Logs if the user is identified as an admin.
-            setIsAdmin(true); // Sets the state to indicate the user is an admin.
-          } else {
-            console.log("User is not an admin."); // Logs if the user is not an admin.
-          }
-        } else {
-          console.log("No admin user found in database."); // Logs if no admin user is found in the database.
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error); // Logs any errors that occur during the admin check.
-      }
-    };
-
-    checkAdmin(); // Calls the function to check if the user is an admin.
+    setIsAdmin(isAdminUser(user));
   }, [user]); // The effect runs whenever the `user` changes.
 
   // Function to toggle the hamburger menu open or closed.

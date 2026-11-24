@@ -1,0 +1,81 @@
+rules_version = '2';
+
+// Firestore security rules for the donation platform.
+// These are the real access control: checks in the React code only decide
+// what the UI shows. Deploy with:  firebase deploy --only firestore:rules
+// Test in the Firebase console Rules Playground before deploying.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Must match ADMIN_UID in src/services/admin.js
+    function isAdmin() {
+      return signedIn() && request.auth.uid == 'CzdRCmUwf4PH3SZAtf4mFEGx7ON2';
+    }
+
+    // Profiles never contain passwords (Firebase Auth handles those).
+    function noPasswords() {
+      return !request.resource.data.keys().hasAny(['password', 'confirmPassword']);
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.auth.uid == userId && noPasswords();
+      allow update: if (request.auth.uid == userId || isAdmin()) && noPasswords();
+      allow delete: if signedIn() && (request.auth.uid == userId || isAdmin());
+    }
+
+    match /DataDonations/{donationId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.idUser == request.auth.uid;
+      allow update, delete: if signedIn()
+        && (resource.data.idUser == request.auth.uid || isAdmin());
+    }
+
+    match /messages/{messageId} {
+      allow read: if signedIn()
+        && (resource.data.receiverId == request.auth.uid
+            || resource.data.senderId == request.auth.uid
+            || isAdmin());
+      allow create: if signedIn() && request.resource.data.senderId == request.auth.uid;
+      allow update: if signedIn()
+        && (resource.data.receiverId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /inquiries/{inquiryId} {
+      allow read: if signedIn()
+        && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Public-to-members content that only the admin manages.
+    match /Associations/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /donationTypes/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /aboutMe/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Admin-only logs.
+    match /deletedMatches/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /doneDonations/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /deletedUsers/{id} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

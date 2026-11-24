@@ -49,3 +49,9 @@ The app opens at http://localhost:3000.
 ## Notes
 
 The Firebase web configuration lives in `src/services/firebase/FireStore.js`. Web API keys are not secret, but access should be restricted with Firestore security rules.
+
+## Security
+
+- Passwords are handled only by Firebase Authentication and are never stored in Firestore.
+- The admin is identified by Firebase Auth UID (`ADMIN_UID` in `src/services/admin.js`), not by user name.
+- Access control lives in `firestore.rules`. Deploy it with `firebase deploy --only firestore:rules` after testing it in the Firebase console Rules Playground. The admin UID in the rules must match `ADMIN_UID`.

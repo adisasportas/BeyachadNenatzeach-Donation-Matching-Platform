@@ -11,6 +11,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { useAuth } from "../../services/contexts/AuthContext";
+import { isAdmin as isAdminUser, ADMIN_UID } from "../../services/admin";
 
 const ConnectUs = () => {
   // State variables to manage form data and component behavior.
@@ -44,42 +45,7 @@ const ConnectUs = () => {
   useEffect(() => {
     if (loading) return; // If loading is true, return early.
 
-    const checkAdmin = async () => {
-      const user = currentUser || localCurrentUser; // Use the currentUser or fallback to localCurrentUser.
-      if (!user || !user.uid) {
-        console.log("No valid user found. User is:", user); // Log if no valid user is found.
-        return;
-      }
-
-      console.log("Checking admin status for user:", user.uid); // Log the user ID being checked.
-
-      const db = firebase; // Initialize Firestore database instance.
-      const usersRef = collection(db, "users"); // Reference the "users" collection in Firestore.
-      const q = query(
-        usersRef,
-        where("userName", "==", "admin"), // Add condition to query for users with userName "admin".
-        where("fullName", "==", "admin") // Add condition to query for users with fullName "admin".
-      );
-
-      try {
-        const querySnapshot = await getDocs(q); // Execute the query to get matching documents.
-        if (!querySnapshot.empty) {
-          const adminDoc = querySnapshot.docs[0]; // Get the first document from the query results.
-          if (adminDoc.id === user.uid) {
-            console.log("User is an admin."); // Log if the user is an admin.
-            setIsAdmin(true); // Set isAdmin to true if the user is an admin.
-          } else {
-            console.log("User is not an admin."); // Log if the user is not an admin.
-          }
-        } else {
-          console.log("No admin user found in database."); // Log if no admin user is found.
-        }
-      } catch (error) {
-        console.error("Error checking admin status:", error); // Log any errors that occur during the admin check.
-      }
-    };
-
-    checkAdmin(); // Call the function to check admin status.
+    setIsAdmin(isAdminUser(currentUser || localCurrentUser));
   }, [currentUser, localCurrentUser, loading]); // Dependencies array to run this effect when currentUser, localCurrentUser, or loading changes.
 
   // useEffect to fetch inquiries if the user is an admin.
@@ -147,7 +113,7 @@ const ConnectUs = () => {
 
       const db = firebase; // Initialize Firestore database instance.
       const inquiriesCollection = collection(db, "inquiries"); // Reference the "inquiries" collection in Firestore.
-      const adminUser = "CzdRCmUwf4PH3SZAtf4mFEGx7ON2"; // Admin user's DocID (replace with the actual admin DocID).
+      const adminUser = ADMIN_UID; // The admin user's UID, from services/admin.js
 
       await addDoc(inquiriesCollection, {
         inquiriesId: Date.now(), // Generate a unique ID for the inquiry.

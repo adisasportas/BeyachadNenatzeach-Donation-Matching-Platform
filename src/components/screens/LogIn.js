@@ -10,7 +10,6 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import CryptoJS from "crypto-js";
 
 const LogIn = () => {
   // State variables to manage form data and component behavior.
@@ -19,7 +18,6 @@ const LogIn = () => {
   const navigate = useNavigate(); // Hook to enable programmatic navigation.
   const { auth } = useAuth(); // Get the auth object from the AuthContext.
   const db = getFirestore(); // Initialize Firestore instance.
-  const encryptionKey = "123"; // Define the encryption key for decrypting passwords.
 
   // Function to handle form submission and user login.
   const handleSubmit = async (event) => {
@@ -45,26 +43,10 @@ const LogIn = () => {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // If the user is found in Firestore.
-        const userDoc = querySnapshot.docs[0]; // Get the first document from the query results.
-        const userData = {
-          id: user.uid, // Set the user's UID.
-          docId: userDoc.id, // Set the Firestore document ID.
-          ...userDoc.data(), // Spread the document data.
-        };
-
-        // Decrypt the stored password from Firestore.
-        const bytes = CryptoJS.AES.decrypt(userData.password, encryptionKey);
-        const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
-
-        // Check if the decrypted password matches the input password.
-        if (password === decryptedPassword) {
-          // If the password matches, the user is successfully authenticated.
-          alert("Welcome!"); // Show a welcome message.
-          navigate("/"); // Navigate to the home page.
-        } else {
-          alert("Invalid login credentials."); // Show an error if the password is incorrect.
-        }
+        // Firebase Auth has already verified the password above, so the
+        // user is authenticated once their profile document exists.
+        alert("Welcome!"); // Show a welcome message.
+        navigate("/"); // Navigate to the home page.
       } else {
         alert("User not found in Firestore."); // Show an error if the user is not found in Firestore.
       }
