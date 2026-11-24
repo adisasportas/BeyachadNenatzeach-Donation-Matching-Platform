@@ -110,7 +110,12 @@ const Messages = () => {
     console.log("markAsRead called with ID:", messageId); // Log the message ID for debugging.
     try {
       const messagesCollection = collection(firebase, "messages"); // Reference the "messages" collection in Firestore.
-      const q = query(messagesCollection, where("id", "==", messageId)); // Query for the specific message by ID.
+      const q = query(
+        messagesCollection,
+        where("id", "==", messageId),
+        // The security rules only allow reading your own messages.
+        where("receiverId", "==", (currentUser || localCurrentUser)?.uid)
+      ); // Query for the specific message by ID.
       const querySnapshot = await getDocs(q); // Execute the query to get the message document.
 
       if (!querySnapshot.empty) {
@@ -146,7 +151,12 @@ const Messages = () => {
     try {
       // מציאת ההודעה המתאימה עם ה-ID
       const messagesCollection = collection(firebase, "messages"); // Reference the "messages" collection in Firestore.
-      const q = query(messagesCollection, where("id", "==", messageId)); // Query for the specific message by ID.
+      const q = query(
+        messagesCollection,
+        where("id", "==", messageId),
+        // The security rules only allow reading your own messages.
+        where("receiverId", "==", (currentUser || localCurrentUser)?.uid)
+      ); // Query for the specific message by ID.
       const querySnapshot = await getDocs(q); // Execute the query to get the message document.
 
       if (!querySnapshot.empty) {
